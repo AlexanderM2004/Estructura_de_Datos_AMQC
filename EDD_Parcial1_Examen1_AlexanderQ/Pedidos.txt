@@ -1,0 +1,14 @@
+13/12/2023
+Orden #: 0
+Cliente: Alexander
+Producto: Ceviche
+Precio: 2.5
+Cantidad: 3
+--------------------------------------------------
+13/12/2023
+Orden #: 1
+Cliente: Brian
+Producto: Encebollado
+Precio: 3.0
+Cantidad: 5
+--------------------------------------------------
