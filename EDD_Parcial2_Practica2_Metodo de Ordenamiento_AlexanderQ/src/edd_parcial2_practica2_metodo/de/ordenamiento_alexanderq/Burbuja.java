@@ -1,43 +1,30 @@
-package edd_parcial2_practica1_metodo.burbuja_alexanderq;
+package edd_parcial2_practica2_metodo.de.ordenamiento_alexanderq;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import static edd_parcial2_practica2_metodo.de.ordenamiento_alexanderq.StringOnlyException.validateString;
+import java.awt.*;
+import java.awt.event.*;
 import static java.awt.image.ImageObserver.HEIGHT;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-
-
-
+import javax.swing.*;
+import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 /**
  *
  * @author Alexander Quizhpe
  */
 public class Burbuja extends JFrame{
-    public JPanel panel;
-    JTextField txt_number = new JTextField();
+     public JPanel panel;
+    JTextField txt_name = new JTextField();
     JTextArea resultArea = new JTextArea(10, 30);
     JButton AddButton = new JButton("Agregar");
     JButton SimularButton = new JButton("Simular");
-    private int[] numbers;
+    private String[] names;
     
     //Creamos una ventana grafica con JFrame
     public Burbuja (){
-        numbers = new int[0];
+        names = new String[0];
         AddButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed (ActionEvent e){
-                addNumber();
+                addName();
             }
         });
         
@@ -74,27 +61,28 @@ public class Burbuja extends JFrame{
     }
 
     public void colocarEtiquetas(){
-        JLabel label = new JLabel("Ordenamiento Burbuja",SwingConstants.CENTER);
+        JLabel label = new JLabel("Ordenamiento Burbuja - Nombres",SwingConstants.CENTER);
         panel.add(label);
         panel.setLayout(null);
         label.setBounds(70, 10, 350, 20);
-        label.setFont(new Font("Arial", Font.PLAIN, 20));
+        label.setFont(new Font("Arial", Font.PLAIN, 15));
         label.setForeground(Color.white);
 
         JLabel label1 = new JLabel();
-        label1.setText("Numero: ");
+        label1.setText("Nombre: ");
         panel.add(label1);
         //Comando para ubicar el label
         label1.setHorizontalAlignment(HEIGHT);
         //comando para modificar fuente de letra
         label1.setFont(new Font("Arial", Font.PLAIN, 15));
         label1.setBounds(30, 45, 70, 15);
+        label1.setForeground(Color.white);
     }
 
     //Comando para colocar cajas de texto
     public void ColocarCajatexto(){
-        txt_number.setBounds(105, 43, 100, 20);
-        panel.add(txt_number);
+        txt_name.setBounds(105, 43, 100, 20);
+        panel.add(txt_name);
     }
 
     public void ColocarAreatext(){
@@ -117,48 +105,51 @@ public class Burbuja extends JFrame{
         SimularButton.setMnemonic('s');//Sirve para que se active el boton con el teclado Alt + n
     }
     
-    private void addNumber(){
+    private void addName(){
         try{
-            int number = Integer.parseInt(txt_number.getText());
-            int [] newArray = new int[numbers.length+1];
-            System.arraycopy(numbers,0,newArray,0,numbers.length);
-            newArray[numbers.length]=number;
-            numbers = newArray;
-            txt_number.setText("");
+            String name = txt_name.getText();
+            validateString(name);
+            String [] newArray = new String[names.length+1];
+            System.arraycopy(names,0,newArray,0,names.length);
+            newArray[names.length]=name;
+            names = newArray;
+            txt_name.setText("");
             updateResultArea();
-        }catch(NumberFormatException e){
-            JOptionPane.showMessageDialog(this, "Ingrese un numero valido","Error", JOptionPane.ERROR_MESSAGE);
+        }catch(StringOnlyException e){
+            JOptionPane.showMessageDialog(this, "Solo se permiten cadenas de texto (Letras)","Error", JOptionPane.ERROR_MESSAGE);
+            txt_name.setText(" ");
         }
     }
     
-    public static void sort(int[] arr) {
+    public static void sort(String [] arr) {
     //Se declara un método estático llamado sort que toma un arreglo de enteros como parámetro. Este método implementa el algoritmo de ordenamiento de burbuja.
         int n = arr.length;
         boolean swapped;
         do {
             swapped = false;
-            for (int i = 1; i < n; i++) {
-                if (arr[i - 1] > arr[i]) {
-                    // swap arr[i-1] and arr[i]
-                    int temp = arr[i - 1];
-                    arr[i - 1] = arr[i];
-                    arr[i] = temp;
-                    swapped = true;
+            String temp = "";
+            for(int i = 0; i < n; i++) {
+                for(int j = 1; j < (n - i); j++) {
+                    if(arr[j - 1].compareTo(arr[j]) > 0) {
+                        temp = arr[j - 1];
+                        arr[j - 1] = arr[j];
+                        arr[j] = temp;
+                    }
                 }
             }
         } while (swapped);
     }
      
     private void simulateBubbleSort(){
-        this.sort(numbers);
+        this.sort(names);
         updateResultArea();
     }
     
     private void updateResultArea(){
         StringBuilder sb = new StringBuilder();
-        for (int num:numbers){
+        for (String num:names){
             sb.append(num).append(" ");
         }
-        resultArea.setText("Numero Ingresados " + sb.toString());
+        resultArea.setText("Nombres Ingresados: "+sb.toString());
     }
 }
